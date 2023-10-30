@@ -152,7 +152,6 @@ void alterar_posicao(Fila* fila){
         return;
     }
 
-    printf("oi");
     char nome_aux[50];
     int idade_aux = pessoa_um->idade;
     char sexo_aux = pessoa_um->sexo;
@@ -161,13 +160,13 @@ void alterar_posicao(Fila* fila){
     strcpy(nome_aux, pessoa_um->nome);
     strcpy(cpf_aux, pessoa_um->cpf);
     strcpy(telefone_aux, pessoa_um->telefone);
-printf("oi");
+
     strcpy(pessoa_um->nome, pessoa_dois->nome);
     strcpy(pessoa_um->cpf, pessoa_dois->cpf);
     strcpy(pessoa_um->telefone, pessoa_dois->telefone);
     pessoa_um->idade = pessoa_dois->idade;
     pessoa_um->sexo = pessoa_dois->sexo;
-printf("oi");
+
     strcpy(pessoa_dois->nome, nome_aux);
     strcpy(pessoa_dois->cpf, cpf_aux);
     strcpy(pessoa_dois->telefone, telefone_aux);
