@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <locale.h>
+#include <string.h>
 
 //Definir os dados da Pessoa
 typedef struct Pessoa{
     char nome[50];
-    char cpf[11];
+    char cpf[12];
     int idade;
     char sexo;
-    char telefone[13];
+    char telefone[14];
     struct Pessoa* proximo;
 } Pessoa;
 
@@ -120,18 +121,17 @@ void alterar_posicao(Fila* fila){
 
     char cpf_pessoa_um[11];
     char cpf_pessoa_dois[11];
-    printf("Digite o CPF da pessoa que voce deseja alterar posicao: ");
+    printf("Digite o CPF da pessoa que voce deseja alterar a posicao: ");
     scanf("%s", cpf_pessoa_um);
-    printf("Digite o CPF da outra pessoa que voce deseja alterar posicao: ");
+    printf("Digite o CPF da outra pessoa que voce deseja alterar a posicao: ");
     scanf("%s", cpf_pessoa_dois);
 
     Pessoa* pessoa_atual = fila->inicio;
     Pessoa* pessoa_um = NULL;
     Pessoa* pessoa_dois = NULL;
     do{
-        if(pessoa_atual->cpf == cpf_pessoa_dois){
-            printf(" oi ");
-            if(pessoa_atual->cpf == cpf_pessoa_um){
+        if(strcmp(pessoa_atual->cpf, cpf_pessoa_um) == 0 || strcmp(pessoa_atual->cpf, cpf_pessoa_dois) == 0){
+            if(strcmp(pessoa_atual->cpf, cpf_pessoa_um) == 0){
                 pessoa_um = pessoa_atual;
             } else {
                 pessoa_dois = pessoa_atual;
@@ -140,7 +140,6 @@ void alterar_posicao(Fila* fila){
 
         //Verificação do encontro das duas pessoas
         if(pessoa_um != NULL && pessoa_dois != NULL){
-            printf("%s - %s\n", pessoa_um->cpf, pessoa_dois->cpf);
             break;
         }
 
@@ -153,11 +152,64 @@ void alterar_posicao(Fila* fila){
         return;
     }
 
-    Pessoa pessoa_aux = *pessoa_um;
-    *pessoa_um = *pessoa_dois;
-    *pessoa_dois = pessoa_aux;
+    printf("oi");
+    char nome_aux[50];
+    int idade_aux = pessoa_um->idade;
+    char sexo_aux = pessoa_um->sexo;
+    char cpf_aux[12];
+    char telefone_aux[14];
+    strcpy(nome_aux, pessoa_um->nome);
+    strcpy(cpf_aux, pessoa_um->cpf);
+    strcpy(telefone_aux, pessoa_um->telefone);
+printf("oi");
+    strcpy(pessoa_um->nome, pessoa_dois->nome);
+    strcpy(pessoa_um->cpf, pessoa_dois->cpf);
+    strcpy(pessoa_um->telefone, pessoa_dois->telefone);
+    pessoa_um->idade = pessoa_dois->idade;
+    pessoa_um->sexo = pessoa_dois->sexo;
+printf("oi");
+    strcpy(pessoa_dois->nome, nome_aux);
+    strcpy(pessoa_dois->cpf, cpf_aux);
+    strcpy(pessoa_dois->telefone, telefone_aux);
+    pessoa_dois->idade = idade_aux;
+    pessoa_dois->sexo = sexo_aux;
+}
 
-    printf("Posicao Alterada!");
+void remover_pessoa(Fila* fila){
+    //Verificação da fila vazia
+    if (fila->inicio == NULL){
+        printf("Fila Vazia!\n");
+        return;
+    }
+
+    char cpf_pessoa[11];
+    printf("Digite o CPF da pessoa que voce deseja excluir: ");
+    scanf("%s", cpf_pessoa);
+
+    Pessoa* pessoa_excluir = fila->inicio;
+    if(strcmp(pessoa_excluir->cpf, cpf_pessoa) == 0){
+        fila->inicio = pessoa_excluir->proximo;
+        free(pessoa_excluir);
+        return;
+    } 
+
+    Pessoa* pessoa_anterior = fila->inicio;
+    pessoa_excluir = pessoa_anterior->proximo;
+    do{
+        if(strcmp(pessoa_excluir->cpf, cpf_pessoa) == 0){
+            pessoa_anterior->proximo = pessoa_excluir->proximo;
+            free(pessoa_excluir);
+            printf("Remocao Concluida\n");
+            break;  
+        }
+
+        pessoa_anterior = pessoa_excluir;
+        pessoa_excluir = pessoa_excluir->proximo;
+    } while (pessoa_excluir != NULL);
+
+    if(pessoa_excluir == NULL){
+        printf("CPF nao encontrado!\n");
+    }
 }
 
 int main(void){
@@ -175,7 +227,7 @@ int main(void){
 
     do {
         printf("-------------------\n");
-        printf("O que deseja fazer?\n1 - Adicionar Pessoa\n2 - Limpar Fila\n3 - Chamar Pessoa\n4 - Exibir Fila\n5 - Alterar Posicao \n6 - Sair\n(Digite o numero referente a acao): ");
+        printf("O que deseja fazer?\n1 - Adicionar Pessoa\n2 - Limpar Fila\n3 - Chamar Pessoa\n4 - Exibir Fila\n5 - Alterar Posicao \n6 - Remover Pessoa\n7 - Sair\n(Digite o numero referente a acao): ");
         scanf("%d", &opcao);
 
         switch(opcao){
@@ -200,6 +252,10 @@ int main(void){
 
                 break;
             case 6:
+                remover_pessoa(fila);
+
+                break;
+            case 7:
                 confirmacao = 's';
 
                 break;
