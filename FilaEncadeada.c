@@ -13,7 +13,7 @@ typedef struct Pessoa{
     char telefone[14];
     struct Pessoa* proximo;
 } Pessoa;
-
+//Definir os dados da Fila
 typedef struct Fila{
     Pessoa* inicio;
 } Fila;
@@ -23,6 +23,7 @@ void adicionar(Fila* fila){
     Pessoa* pessoa = (Pessoa*) malloc(sizeof(Pessoa));
     //Verificação de alocação
     if (pessoa == NULL){
+        printf("-------------------\n");
         printf("Erro de alocacao");
         return;
     } 
@@ -48,6 +49,7 @@ void adicionar(Fila* fila){
     //Verificação se é o primeiro da fila
     if (fila->inicio == NULL){
         fila->inicio = pessoa;
+        printf("-------------------\n");
         printf("A pessoa entrou na fila!\n"); 
         return;
     }
@@ -63,12 +65,14 @@ void adicionar(Fila* fila){
 void mostrar_fila(Fila* fila){    
     //Verificação da fila vazia
     if (fila->inicio == NULL){
+        printf("-------------------\n");
         printf("Fila Vazia!\n");
         return;
     }
 
     Pessoa* pessoa_atual = fila->inicio;
     int posicao = 1;
+    printf("-------------------\n");
     do{
         printf("Pessoa %d:\n Nome: %s\n CPF: %s\n Idade: %d\n Sexo: %c\n Telefone: %s\n",
         posicao, pessoa_atual->nome, pessoa_atual->cpf, pessoa_atual->idade, pessoa_atual->sexo, pessoa_atual->telefone);
@@ -82,6 +86,7 @@ void mostrar_fila(Fila* fila){
 void limpar_fila(Fila* fila){
     //Verificação da fila vazia
     if (fila->inicio == NULL){
+        printf("-------------------\n");
         printf("Fila Vazia!\n");
         return;
     }
@@ -91,16 +96,19 @@ void limpar_fila(Fila* fila){
     do{        
         prox_pessoa = pessoa_atual->proximo;
         free(pessoa_atual);
+        pessoa_atual = NULL;
         pessoa_atual = prox_pessoa;
     } while (pessoa_atual != NULL);
 
     fila->inicio = NULL;
+    printf("-------------------\n");
     printf("Fila Limpa!\n");
 }
 
 void chamar(Fila* fila){
     //Verificação da fila vazia
     if (fila->inicio == NULL){
+        printf("-------------------\n");
         printf("Fila Vazia!\n");
         return;
     }
@@ -108,19 +116,23 @@ void chamar(Fila* fila){
     Pessoa* pessoa_atual = fila->inicio;
     Pessoa* prox_pessoa = pessoa_atual->proximo;
     free(pessoa_atual);
+    pessoa_atual = NULL;
     fila->inicio = prox_pessoa;
+    printf("-------------------\n");
     printf("Chamada Concluida!\n");
 }
 
 void alterar_posicao(Fila* fila){
     //Verificação da fila vazia
     if (fila->inicio == NULL){
+        printf("-------------------\n");
         printf("Fila Vazia!\n");
         return;
     }
 
     char cpf_pessoa_um[11];
     char cpf_pessoa_dois[11];
+    printf("-------------------\n");
     printf("Digite o CPF da pessoa que voce deseja alterar a posicao: ");
     scanf("%s", cpf_pessoa_um);
     printf("Digite o CPF da outra pessoa que voce deseja alterar a posicao: ");
@@ -172,16 +184,20 @@ void alterar_posicao(Fila* fila){
     strcpy(pessoa_dois->telefone, telefone_aux);
     pessoa_dois->idade = idade_aux;
     pessoa_dois->sexo = sexo_aux;
+
+    printf("Alteracao Concluida!\n");
 }
 
 void remover_pessoa(Fila* fila){
     //Verificação da fila vazia
     if (fila->inicio == NULL){
+        printf("-------------------\n");
         printf("Fila Vazia!\n");
         return;
     }
 
     char cpf_pessoa[11];
+    printf("-------------------\n");
     printf("Digite o CPF da pessoa que voce deseja excluir: ");
     scanf("%s", cpf_pessoa);
 
@@ -189,6 +205,7 @@ void remover_pessoa(Fila* fila){
     if(strcmp(pessoa_excluir->cpf, cpf_pessoa) == 0){
         fila->inicio = pessoa_excluir->proximo;
         free(pessoa_excluir);
+        pessoa_excluir = NULL;
         return;
     } 
 
@@ -198,6 +215,8 @@ void remover_pessoa(Fila* fila){
         if(strcmp(pessoa_excluir->cpf, cpf_pessoa) == 0){
             pessoa_anterior->proximo = pessoa_excluir->proximo;
             free(pessoa_excluir);
+            pessoa_excluir = NULL;
+            printf("-------------------\n");
             printf("Remocao Concluida\n");
             break;  
         }
@@ -206,7 +225,9 @@ void remover_pessoa(Fila* fila){
         pessoa_excluir = pessoa_excluir->proximo;
     } while (pessoa_excluir != NULL);
 
+    //Verificar se a pessoa foi encontrada
     if(pessoa_excluir == NULL){
+        printf("-------------------\n");
         printf("CPF nao encontrado!\n");
     }
 }
@@ -215,6 +236,7 @@ int main(void){
     Fila* fila = (Fila*) malloc(sizeof(Pessoa));
     //Verificação de alocação
     if (fila == NULL){
+        printf("-------------------\n");
         printf("Erro de alocacao");
     } 
 
