@@ -25,6 +25,7 @@ void adicionar(Fila* fila){
     if (pessoa == NULL){
         printf("-------------------\n");
         printf("Erro de alocacao");
+        erro(1);
         return;
     } 
 
@@ -238,6 +239,7 @@ int main(void){
     if (fila == NULL){
         printf("-------------------\n");
         printf("Erro de alocacao");
+        erro(1);
     } 
 
     //Inicializar fila

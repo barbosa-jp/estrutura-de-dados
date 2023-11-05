@@ -4,7 +4,6 @@
 #include <string.h>
 #include <locale.h>
 
-//Definir os atributos de Pessoa
 typedef struct Pessoa{
     char nome[50];
     char cpf[12];
@@ -47,7 +46,7 @@ void cadastrar(Pessoa** nova_pessoa, int cont){
 void excluir(Pessoa** excluir_pessoa, int total_pessoas){
     if(total_pessoas == 0){
         printf("--------------\n");
-        printf("Sem pessoas cadastradas\n");
+        printf("Pilha vazia\n");
         return;
     }
 
@@ -82,7 +81,7 @@ void alterar(Pessoa** alterar_pessoa, int total_pessoas){
 
     if(total_pessoas == 0){
         printf("--------------\n");
-        printf("Sem pessoas cadastradas\n");
+        printf("Pilha vazia\n");
         return;
     }
 
@@ -140,7 +139,7 @@ void exibir_um(Pessoa** exibir_pessoa, int total_pessoas){
     
     if(total_pessoas == 0){
         printf("--------------\n");
-        printf("Sem pessoas cadastradas\n");
+        printf("Pilha vazia\n");
         return;
     }
 
@@ -167,7 +166,7 @@ void exibir_um(Pessoa** exibir_pessoa, int total_pessoas){
 void exibir_todos(Pessoa** exibir_pessoas, int cont){
     if(exibir_pessoas == 0){
         printf("--------------\n");
-        printf("Sem pessoas cadastradas\n");
+        printf("Pilha vazia\n");
         return;
     }
     for(int i = 0; i < cont; i++){
@@ -176,6 +175,20 @@ void exibir_todos(Pessoa** exibir_pessoas, int cont){
             exibir_pessoas[i]->nome, exibir_pessoas[i]->cpf, exibir_pessoas[i]->idade,
             exibir_pessoas[i]->sexo, exibir_pessoas[i]->telefone);
     }
+}
+
+void chamar(Pessoa** chamar_pessoa, int total_pessoas){
+    //Verificação da fila vazia
+    if (total_pessoas == 0){
+        printf("--------------\n");
+        printf("Pilha Vazia!\n");
+        return;
+    }
+
+    free(chamar_pessoa[total_pessoas-1]);
+    chamar_pessoa[total_pessoas-1] = NULL;
+    printf("--------------\n");
+    printf("Chamada Concluida!\n");
 }
 
 int main(void){
@@ -188,7 +201,7 @@ int main(void){
 
     do {
         printf("--------------\n");
-        printf("O que deseja fazer?\n1 - Cadastrar\n2 - Excluir\n3 - Alterar\n4 - Exibir\n5 - Sair\n(Digite o numero referente a acao): ");
+        printf("O que deseja fazer?\n1 - Cadastrar\n2 - Excluir\n3 - Alterar\n4 - Exibir\n5 - Chamar\n6 - Sair\n(Digite o numero referente a acao): ");
         scanf("%d", &opcao);
 
         switch(opcao){
@@ -200,7 +213,9 @@ int main(void){
             case 2:
                 excluir(pessoas, contador);
                 contador--;
-
+                if(contador%2 == 0){
+                    pessoas = (Pessoa**) realloc(pessoas, contador*sizeof(Pessoa*));
+                }
                 break;
             case 3:
                 alterar(pessoas, contador);
@@ -219,9 +234,17 @@ int main(void){
 
                 break;
             case 5:
-                confirmacao = 's';
+                chamar(pessoas, contador);
+                contador--;
+                if(contador%2 == 0){
+                    pessoas = (Pessoa**) realloc(pessoas, contador*sizeof(Pessoa*));
+                }
 
                 break;
+            case 6:
+                confirmacao = 's';
+                
+                break;;
             default:
                 printf("Valor invalido\n");
                 
